@@ -41,3 +41,19 @@ def get_playlist_tracks(playlist_id: str = Query(..., description="Spotify playl
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/album")
+def get_album_tracks(album_id: str):
+    try:
+        results = sp.album_tracks(album_id)
+        tracks = []
+
+        for item in results["items"]:
+            track_name = item["name"]
+            artists = ", ".join([artist["name"] for artist in item["artists"]])
+            tracks.append({"title": track_name, "artist": artists})
+
+        return {"tracks": tracks}
+
+    except spotipy.SpotifyException as e:
+        raise HTTPException(status_code=500, detail=str(e))
