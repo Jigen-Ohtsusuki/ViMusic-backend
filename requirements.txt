@@ -1,0 +1,4 @@
+spotipy
+fastapi
+uvicorn
+python-dotenv
